@@ -68,6 +68,7 @@ type MenuRootContextValue = {
   onContentChange(content: MenuContentElement | null): void;
   onRootClose(): void;
   modal: boolean;
+  allowPinchZoom: MenuProps['allowPinchZoom'];
 };
 
 type MenuSubContextValue = Omit<MenuRootContextValue, 'isSubmenu'> & {
@@ -76,6 +77,7 @@ type MenuSubContextValue = Omit<MenuRootContextValue, 'isSubmenu'> & {
   triggerId: string;
   trigger: MenuSubTriggerElement | null;
   onTriggerChange(trigger: MenuSubTriggerElement | null): void;
+  allowPinchZoom: MenuProps['allowPinchZoom'];
 };
 
 const [MenuProvider, useMenuContext] = createMenuContext<
@@ -88,10 +90,22 @@ interface MenuProps {
   onOpenChange?(open: boolean): void;
   dir?: Direction;
   modal?: boolean;
+  /**
+   * @see https://github.com/theKashey/react-remove-scroll#usage
+   */
+  allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 
 const Menu: React.FC<MenuProps> = (props: ScopedProps<MenuProps>) => {
-  const { __scopeMenu, open = false, children, dir, onOpenChange, modal = true } = props;
+  const {
+    __scopeMenu,
+    open = false,
+    children,
+    dir,
+    onOpenChange,
+    modal = true,
+    allowPinchZoom,
+  } = props;
   const popperScope = usePopperScope(__scopeMenu);
   const [content, setContent] = React.useState<MenuContentElement | null>(null);
   const isUsingKeyboardRef = React.useRef(false);
@@ -128,6 +142,7 @@ const Menu: React.FC<MenuProps> = (props: ScopedProps<MenuProps>) => {
         onContentChange={setContent}
         onRootClose={React.useCallback(() => handleOpenChange(false), [handleOpenChange])}
         modal={modal}
+        allowPinchZoom={allowPinchZoom}
       >
         {children}
       </MenuProvider>
@@ -178,6 +193,7 @@ const MenuSub: React.FC<MenuSubProps> = (props: ScopedProps<MenuSubProps>) => {
         onTriggerChange={setTrigger}
         triggerId={useId()}
         modal={false}
+        allowPinchZoom={parentMenuContext.allowPinchZoom}
       >
         {children}
       </MenuProvider>
@@ -427,11 +443,6 @@ interface MenuContentImplProps
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
 
   /**
-   * @see https://github.com/theKashey/react-remove-scroll#usage
-   */
-  allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
-
-  /**
    * Whether scrolling outside the `MenuContent` should be prevented
    * (default: `false`)
    */
@@ -470,7 +481,6 @@ const MenuContentImpl = React.forwardRef<MenuContentImplElement, MenuContentImpl
       onInteractOutside,
       onDismiss,
       disableOutsideScroll,
-      allowPinchZoom,
       portalled,
       ...contentProps
     } = props;
@@ -490,7 +500,9 @@ const MenuContentImpl = React.forwardRef<MenuContentImplElement, MenuContentImpl
 
     const PortalWrapper = portalled ? Portal : React.Fragment;
     const ScrollLockWrapper = disableOutsideScroll ? RemoveScroll : React.Fragment;
-    const scrollLockWrapperProps = disableOutsideScroll ? { allowPinchZoom } : undefined;
+    const scrollLockWrapperProps = disableOutsideScroll
+      ? { allowPinchZoom: context.allowPinchZoom }
+      : undefined;
 
     const handleTypeaheadSearch = (key: string) => {
       const search = searchRef.current + key;

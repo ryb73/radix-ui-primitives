@@ -55,6 +55,7 @@ interface DropdownMenuProps {
   defaultOpen?: boolean;
   onOpenChange?(open: boolean): void;
   modal?: boolean;
+  allowPinchZoom?: DropdownMenuRootProps['allowPinchZoom'];
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = (props: ScopedProps<DropdownMenuProps>) => {
@@ -92,6 +93,7 @@ DropdownMenu.displayName = DROPDOWN_MENU_NAME;
 
 /* ---------------------------------------------------------------------------------------------- */
 
+type MenuRootProps = Radix.ComponentPropsWithoutRef<typeof MenuPrimitive.Root>;
 interface DropdownMenuRootProps {
   children?: React.ReactNode;
   dir?: Direction;
@@ -99,6 +101,7 @@ interface DropdownMenuRootProps {
   onOpenChange(open: boolean): void;
   onOpenToggle(): void;
   modal?: boolean;
+  allowPinchZoom?: MenuRootProps['allowPinchZoom'];
 }
 
 const DropdownMenuRoot: React.FC<DropdownMenuRootProps> = (
@@ -112,6 +115,7 @@ const DropdownMenuRoot: React.FC<DropdownMenuRootProps> = (
     onOpenChange,
     onOpenToggle,
     modal = true,
+    allowPinchZoom,
   } = props;
   const menuScope = useMenuScope(__scopeDropdownMenu);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -133,6 +137,7 @@ const DropdownMenuRoot: React.FC<DropdownMenuRootProps> = (
         onOpenChange={onOpenChange}
         dir={dir}
         modal={modal}
+        allowPinchZoom={allowPinchZoom}
       >
         {children}
       </MenuPrimitive.Root>

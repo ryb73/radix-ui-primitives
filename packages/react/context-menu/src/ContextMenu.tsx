@@ -34,15 +34,17 @@ type ContextMenuContextValue = {
 const [ContextMenuProvider, useContextMenuContext] =
   createContextMenuContext<ContextMenuContextValue>(CONTEXT_MENU_NAME);
 
+type MenuRootProps = Radix.ComponentPropsWithoutRef<typeof MenuPrimitive.Root>;
 interface ContextMenuProps {
   children?: React.ReactNode;
   onOpenChange?(open: boolean): void;
   dir?: Direction;
   modal?: boolean;
+  allowPinchZoom?: MenuRootProps['allowPinchZoom'];
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = (props: ScopedProps<ContextMenuProps>) => {
-  const { __scopeContextMenu, children, onOpenChange, dir, modal = true } = props;
+  const { __scopeContextMenu, children, onOpenChange, dir, modal = true, allowPinchZoom } = props;
   const [open, setOpen] = React.useState(false);
   const contentContext = useContentContext(CONTEXT_MENU_NAME, __scopeContextMenu);
   const menuScope = useMenuScope(__scopeContextMenu);
@@ -82,6 +84,7 @@ const ContextMenu: React.FC<ContextMenuProps> = (props: ScopedProps<ContextMenuP
         open={open}
         onOpenChange={handleOpenChange}
         modal={modal}
+        allowPinchZoom={allowPinchZoom}
       >
         {children}
       </MenuPrimitive.Root>
