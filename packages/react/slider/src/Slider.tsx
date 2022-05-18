@@ -207,7 +207,9 @@ type SliderOrientationPrivateProps = {
 };
 interface SliderOrientationProps
   extends Omit<SliderImplProps, keyof SliderImplPrivateProps>,
-    SliderOrientationPrivateProps {}
+    SliderOrientationPrivateProps {
+  getValueFromPointer?: (pointerPosition: number, sliderWidth: number) => number;
+}
 
 type SliderHorizontalElement = SliderImplElement;
 interface SliderHorizontalProps extends SliderOrientationProps {
@@ -216,22 +218,30 @@ interface SliderHorizontalProps extends SliderOrientationProps {
 
 const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
-    const { min, max, dir, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props;
+    const {
+      min,
+      max,
+      dir,
+      onSlideStart,
+      onSlideMove,
+      onStepKeyDown,
+      getValueFromPointer: givenGetValueFromPointer,
+      ...sliderProps
+    } = props;
     const [slider, setSlider] = React.useState<SliderImplElement | null>(null);
     const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node));
     const rectRef = React.useRef<ClientRect>();
     const direction = useDirection(dir);
     const isDirectionLTR = direction === 'ltr';
 
-    function getValueFromPointer(pointerPosition: number) {
-      const rect = rectRef.current || slider!.getBoundingClientRect();
-      const input: [number, number] = [0, rect.width];
-      const output: [number, number] = isDirectionLTR ? [min, max] : [max, min];
+    function defaultGetValueFromPointer(pointerPosition: number, sliderWidth: number) {
+      const input: [number, number] = [0, sliderWidth];
+      const output: [number, number] = [min, max];
       const value = linearScale(input, output);
 
-      rectRef.current = rect;
-      return value(pointerPosition - rect.left);
+      return value(pointerPosition);
     }
+    const getValueFromPointer = givenGetValueFromPointer || defaultGetValueFromPointer;
 
     return (
       <SliderOrientationProvider
@@ -251,11 +261,21 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
             ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
           }}
           onSlideStart={(event) => {
-            const value = getValueFromPointer(event.clientX);
+            rectRef.current = rectRef.current || slider!.getBoundingClientRect();
+            const positionFromLeft = event.clientX - rectRef.current!.left;
+            const pointerPosition = isDirectionLTR
+              ? positionFromLeft
+              : rectRef.current!.width - positionFromLeft;
+            const value = getValueFromPointer(pointerPosition, rectRef.current!.width);
             onSlideStart?.(value);
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.clientX);
+            rectRef.current = rectRef.current || slider!.getBoundingClientRect();
+            const positionFromLeft = event.clientX - rectRef.current!.left;
+            const pointerPosition = isDirectionLTR
+              ? positionFromLeft
+              : rectRef.current!.width - positionFromLeft;
+            const value = getValueFromPointer(pointerPosition, rectRef.current!.width);
             onSlideMove?.(value);
           }}
           onSlideEnd={() => (rectRef.current = undefined)}
@@ -440,19 +460,29 @@ SliderTrack.displayName = TRACK_NAME;
 const RANGE_NAME = 'SliderRange';
 
 type SliderRangeElement = React.ElementRef<typeof Primitive.span>;
-interface SliderRangeProps extends PrimitiveSpanProps {}
+interface SliderRangeProps extends PrimitiveSpanProps {
+  convertValueToPercentage?: (value: number) => number;
+}
 
 const SliderRange = React.forwardRef<SliderRangeElement, SliderRangeProps>(
   (props: ScopedProps<SliderRangeProps>, forwardedRef) => {
-    const { __scopeSlider, ...rangeProps } = props;
+    const {
+      __scopeSlider,
+      convertValueToPercentage: givenConvertValueToPercentage,
+      ...rangeProps
+    } = props;
     const context = useSliderContext(RANGE_NAME, __scopeSlider);
     const orientation = useSliderOrientationContext(RANGE_NAME, __scopeSlider);
     const ref = React.useRef<HTMLSpanElement>(null);
     const composedRefs = useComposedRefs(forwardedRef, ref);
     const valuesCount = context.values.length;
-    const percentages = context.values.map((value) =>
-      convertValueToPercentage(value, context.min, context.max)
-    );
+
+    const convertValueToPercentage =
+      givenConvertValueToPercentage ||
+      ((value) => defaultConvertValueToPercentage(value, context.min, context.max));
+
+    const percentages = context.values.map(convertValueToPercentage);
+
     const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0;
     const offsetEnd = 100 - Math.max(...percentages);
 
@@ -499,25 +529,33 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
 type SliderThumbImplElement = React.ElementRef<typeof Primitive.span>;
 interface SliderThumbImplProps extends PrimitiveSpanProps {
   index: number;
+  convertValueToPercentage?: (value: number) => number;
 }
 
 const SliderThumbImpl = React.forwardRef<SliderThumbImplElement, SliderThumbImplProps>(
   (props: ScopedProps<SliderThumbImplProps>, forwardedRef) => {
-    const { __scopeSlider, index, ...thumbProps } = props;
+    const {
+      __scopeSlider,
+      index,
+      convertValueToPercentage: givenConvertValueToPercentage,
+      ...thumbProps
+    } = props;
     const context = useSliderContext(THUMB_NAME, __scopeSlider);
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider);
     const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null);
     const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node));
-    const size = useSize(thumb);
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined;
-    const percent =
-      value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max);
+
+    const convertValueToPercentage =
+      givenConvertValueToPercentage ||
+      ((value) => defaultConvertValueToPercentage(value, context.min, context.max));
+
+    const size = useSize(thumb);
+    const halfOrientationSize = size ? size[orientation.size] / 2 : undefined;
+    const percent = value === undefined ? 0 : convertValueToPercentage(value);
+
     const label = getLabel(index, context.values.length);
-    const orientationSize = size?.[orientation.size];
-    const thumbInBoundsOffset = orientationSize
-      ? getThumbInBoundsOffset(orientationSize, percent, orientation.direction)
-      : 0;
 
     React.useEffect(() => {
       if (thumb) {
@@ -533,7 +571,9 @@ const SliderThumbImpl = React.forwardRef<SliderThumbImplElement, SliderThumbImpl
         style={{
           transform: 'var(--radix-slider-thumb-transform)',
           position: 'absolute',
-          [orientation.startEdge]: `calc(${percent}% + ${thumbInBoundsOffset}px)`,
+          [orientation.startEdge]: halfOrientationSize
+            ? `clamp(${halfOrientationSize}px, ${percent}%, 100% - ${halfOrientationSize}px)`
+            : `${percent}%`,
         }}
       >
         <Collection.ItemSlot scope={props.__scopeSlider}>
@@ -606,7 +646,7 @@ function getNextSortedValues(prevValues: number[] = [], nextValue: number, atInd
   return nextValues.sort((a, b) => a - b);
 }
 
-function convertValueToPercentage(value: number, min: number, max: number) {
+function defaultConvertValueToPercentage(value: number, min: number, max: number) {
   const maxSteps = max - min;
   const percentPerStep = 100 / maxSteps;
   return percentPerStep * (value - min);
@@ -638,17 +678,6 @@ function getClosestValueIndex(values: number[], nextValue: number) {
   const distances = values.map((value) => Math.abs(value - nextValue));
   const closestDistance = Math.min(...distances);
   return distances.indexOf(closestDistance);
-}
-
-/**
- * Offsets the thumb centre point while sliding to ensure it remains
- * within the bounds of the slider when reaching the edges
- */
-function getThumbInBoundsOffset(width: number, left: number, direction: number) {
-  const halfWidth = width / 2;
-  const halfPercent = 50;
-  const offset = linearScale([0, halfPercent], [0, halfWidth]);
-  return (halfWidth - offset(left) * direction) * direction;
 }
 
 /**
