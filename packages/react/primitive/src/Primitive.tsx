@@ -6,9 +6,12 @@ const NODES = [
   'a',
   'button',
   'div',
+  'form',
   'h2',
   'h3',
   'img',
+  'input',
+  'label',
   'li',
   'nav',
   'ol',
@@ -38,31 +41,22 @@ interface PrimitiveForwardRefComponent<E extends React.ElementType>
  * Primitive
  * -----------------------------------------------------------------------------------------------*/
 
-const Primitive = NODES.reduce(
-  (primitive, node) => ({
-    ...primitive,
-    [node]: React.forwardRef((props: PrimitivePropsWithRef<typeof node>, forwardedRef: any) => {
-      const { asChild, ...primitiveProps } = props;
-      const Comp: any = asChild ? Slot : node;
+const Primitive = NODES.reduce((primitive, node) => {
+  const Node = React.forwardRef((props: PrimitivePropsWithRef<typeof node>, forwardedRef: any) => {
+    const { asChild, ...primitiveProps } = props;
+    const Comp: any = asChild ? Slot : node;
 
-      React.useEffect(() => {
-        (window as any)[Symbol.for('radix-ui')] = true;
-      }, []);
+    React.useEffect(() => {
+      (window as any)[Symbol.for('radix-ui')] = true;
+    }, []);
 
-      // DEPRECATED
-      if (process.env.NODE_ENV === 'development' && (props as any).as) {
-        console.warn(AS_ERROR);
-      }
+    return <Comp {...primitiveProps} ref={forwardedRef} />;
+  });
 
-      return <Comp {...primitiveProps} ref={forwardedRef} />;
-    }),
-  }),
-  {} as Primitives
-);
+  Node.displayName = `Primitive.${node}`;
 
-/* -----------------------------------------------------------------------------------------------*/
-
-const AS_ERROR = `Warning: The \`as\` prop has been removed in favour of \`asChild\`. For details, see https://radix-ui.com/docs/primitives/overview/styling#changing-the-rendered-element`;
+  return { ...primitive, [node]: Node };
+}, {} as Primitives);
 
 /* -------------------------------------------------------------------------------------------------
  * Utils

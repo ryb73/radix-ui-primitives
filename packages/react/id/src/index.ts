@@ -1,1 +1,1 @@
-export * from './id';
+export { useId } from './id';

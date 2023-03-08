@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { composeEventHandlers } from '@radix-ui/primitive';
 import { createContextScope } from '@radix-ui/react-context';
-import { useControllableState } from '@radix-ui/react-use-controllable-state';
+import { createRovingFocusGroupScope } from '@radix-ui/react-roving-focus';
+import { Presence } from '@radix-ui/react-presence';
 import { Primitive } from '@radix-ui/react-primitive';
 import * as RovingFocusGroup from '@radix-ui/react-roving-focus';
-import { createRovingFocusGroupScope } from '@radix-ui/react-roving-focus';
-import { useId } from '@radix-ui/react-id';
 import { useDirection } from '@radix-ui/react-direction';
+import { useControllableState } from '@radix-ui/react-use-controllable-state';
+import { useId } from '@radix-ui/react-id';
 
 import type * as Radix from '@radix-ui/react-primitive';
 import type { Scope } from '@radix-ui/react-context';
@@ -216,29 +217,50 @@ const CONTENT_NAME = 'TabsContent';
 type TabsContentElement = React.ElementRef<typeof Primitive.div>;
 interface TabsContentProps extends PrimitiveDivProps {
   value: string;
+
+  /**
+   * Used to force mounting when more control is needed. Useful when
+   * controlling animation with React animation libraries.
+   */
+  forceMount?: true;
 }
 
 const TabsContent = React.forwardRef<TabsContentElement, TabsContentProps>(
   (props: ScopedProps<TabsContentProps>, forwardedRef) => {
-    const { __scopeTabs, value, children, ...contentProps } = props;
+    const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
     const context = useTabsContext(CONTENT_NAME, __scopeTabs);
     const triggerId = makeTriggerId(context.baseId, value);
     const contentId = makeContentId(context.baseId, value);
     const isSelected = value === context.value;
+    const isMountAnimationPreventedRef = React.useRef(isSelected);
+
+    React.useEffect(() => {
+      const rAF = requestAnimationFrame(() => (isMountAnimationPreventedRef.current = false));
+      return () => cancelAnimationFrame(rAF);
+    }, []);
+
     return (
-      <Primitive.div
-        data-state={isSelected ? 'active' : 'inactive'}
-        data-orientation={context.orientation}
-        role="tabpanel"
-        aria-labelledby={triggerId}
-        hidden={!isSelected}
-        id={contentId}
-        tabIndex={0}
-        {...contentProps}
-        ref={forwardedRef}
-      >
-        {isSelected && children}
-      </Primitive.div>
+      <Presence present={forceMount || isSelected}>
+        {({ present }) => (
+          <Primitive.div
+            data-state={isSelected ? 'active' : 'inactive'}
+            data-orientation={context.orientation}
+            role="tabpanel"
+            aria-labelledby={triggerId}
+            hidden={!present}
+            id={contentId}
+            tabIndex={0}
+            {...contentProps}
+            ref={forwardedRef}
+            style={{
+              ...props.style,
+              animationDuration: isMountAnimationPreventedRef.current ? '0s' : undefined,
+            }}
+          >
+            {present && children}
+          </Primitive.div>
+        )}
+      </Presence>
     );
   }
 );

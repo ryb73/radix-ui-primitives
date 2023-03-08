@@ -1,6 +1,6 @@
 {
   "name": "@radix-ui/react-popper",
-  "version": "0.1.5-rc.18",
+  "version": "1.1.1",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -17,11 +17,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@radix-ui/popper": "workspace:*",
+    "@floating-ui/react-dom": "0.7.2",
     "@radix-ui/react-arrow": "workspace:*",
     "@radix-ui/react-compose-refs": "workspace:*",
     "@radix-ui/react-context": "workspace:*",
     "@radix-ui/react-primitive": "workspace:*",
+    "@radix-ui/react-use-callback-ref": "workspace:*",
+    "@radix-ui/react-use-layout-effect": "workspace:*",
     "@radix-ui/react-use-rect": "workspace:*",
     "@radix-ui/react-use-size": "workspace:*",
     "@radix-ui/rect": "workspace:*"
@@ -37,6 +39,5 @@
   },
   "bugs": {
     "url": "https://github.com/radix-ui/primitives/issues"
-  },
-  "stableVersion": "0.1.4"
+  }
 }

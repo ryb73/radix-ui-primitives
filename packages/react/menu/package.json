@@ -1,6 +1,6 @@
 {
   "name": "@radix-ui/react-menu",
-  "version": "0.1.7-rc.21",
+  "version": "2.0.4",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -31,9 +31,10 @@
     "@radix-ui/react-presence": "workspace:*",
     "@radix-ui/react-primitive": "workspace:*",
     "@radix-ui/react-roving-focus": "workspace:*",
+    "@radix-ui/react-slot": "workspace:*",
     "@radix-ui/react-use-callback-ref": "workspace:*",
     "aria-hidden": "^1.1.1",
-    "react-remove-scroll": "^2.4.0"
+    "react-remove-scroll": "2.5.5"
   },
   "peerDependencies": {
     "react": "^16.8 || ^17.0 || ^18.0",
@@ -46,6 +47,5 @@
   },
   "bugs": {
     "url": "https://github.com/radix-ui/primitives/issues"
-  },
-  "stableVersion": "0.1.6"
+  }
 }

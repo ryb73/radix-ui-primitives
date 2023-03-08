@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, keyframes } from '../../../../stitches.config';
 import * as Menu from '@radix-ui/react-menu';
 import { foodGroups } from '../../../../test-data/foods';
+import { DirectionProvider } from '@radix-ui/react-direction';
 
 export default {
   title: 'Components/Menu',
@@ -45,7 +46,7 @@ export const Submenus = () => {
   }, [rtl]);
 
   return (
-    <>
+    <DirectionProvider dir={rtl ? 'rtl' : 'ltr'}>
       <div style={{ marginBottom: 8, display: 'grid', gridAutoFlow: 'row', gap: 4 }}>
         <label>
           <input
@@ -136,7 +137,7 @@ export const Submenus = () => {
           Paste
         </Menu.Item>
       </MenuWithAnchor>
-    </>
+    </DirectionProvider>
   );
 };
 
@@ -234,34 +235,43 @@ export const Typeahead = () => (
 );
 
 export const CheckboxItems = () => {
-  const checkboxItems = [
-    { label: 'Bold', state: React.useState(false) },
-    { label: 'Italic', state: React.useState(true) },
-    { label: 'Underline', state: React.useState(false) },
-    { label: 'Strikethrough', state: React.useState(false), disabled: true },
-  ];
+  const options = ['Crows', 'Ravens', 'Magpies', 'Jackdaws'];
+
+  const [selection, setSelection] = React.useState<string[]>([]);
+
+  const handleSelectAll = () => {
+    setSelection((currentSelection) => (currentSelection.length === options.length ? [] : options));
+  };
 
   return (
     <MenuWithAnchor>
-      <Menu.Item className={itemClass()} onSelect={() => window.alert('show')}>
-        Show fonts
-      </Menu.Item>
-      <Menu.Item className={itemClass()} onSelect={() => window.alert('bigger')}>
-        Bigger
-      </Menu.Item>
-      <Menu.Item className={itemClass()} onSelect={() => window.alert('smaller')}>
-        Smaller
-      </Menu.Item>
+      <Menu.CheckboxItem
+        className={itemClass()}
+        checked={
+          selection.length === options.length ? true : selection.length ? 'indeterminate' : false
+        }
+        onCheckedChange={handleSelectAll}
+      >
+        Select all
+        <Menu.ItemIndicator>
+          {selection.length === options.length ? <TickIcon /> : '—'}
+        </Menu.ItemIndicator>
+      </Menu.CheckboxItem>
       <Menu.Separator className={separatorClass()} />
-      {checkboxItems.map(({ label, state: [checked, setChecked], disabled }) => (
+      {options.map((option) => (
         <Menu.CheckboxItem
-          key={label}
+          key={option}
           className={itemClass()}
-          checked={checked}
-          onCheckedChange={setChecked}
-          disabled={disabled}
+          checked={selection.includes(option)}
+          onCheckedChange={() =>
+            setSelection((current) =>
+              current.includes(option)
+                ? current.filter((el) => el !== option)
+                : current.concat(option)
+            )
+          }
         >
-          {label}
+          {option}
           <Menu.ItemIndicator>
             <TickIcon />
           </Menu.ItemIndicator>
@@ -352,11 +362,7 @@ export const Animated = () => {
 
 type MenuProps = Omit<
   React.ComponentProps<typeof Menu.Root> & React.ComponentProps<typeof Menu.Content>,
-  | 'portalled'
-  | 'trapFocus'
-  | 'onCloseAutoFocus'
-  | 'disableOutsidePointerEvents'
-  | 'disableOutsideScroll'
+  'trapFocus' | 'onCloseAutoFocus' | 'disableOutsidePointerEvents' | 'disableOutsideScroll'
 >;
 
 const MenuWithAnchor: React.FC<MenuProps> = (props) => {
@@ -365,15 +371,16 @@ const MenuWithAnchor: React.FC<MenuProps> = (props) => {
     <Menu.Root open={open} onOpenChange={() => {}} modal={false}>
       {/* inline-block allows anchor to move when rtl changes on document */}
       <Menu.Anchor style={{ display: 'inline-block' }} />
-      <Menu.Content
-        className={contentClass()}
-        portalled
-        onCloseAutoFocus={(event) => event.preventDefault()}
-        align="start"
-        {...contentProps}
-      >
-        {children}
-      </Menu.Content>
+      <Menu.Portal>
+        <Menu.Content
+          className={contentClass()}
+          onCloseAutoFocus={(event) => event.preventDefault()}
+          align="start"
+          {...contentProps}
+        >
+          {children}
+        </Menu.Content>
+      </Menu.Portal>
     </Menu.Root>
   );
 };
@@ -395,12 +402,14 @@ const Submenu: React.FC<MenuProps & { animated: boolean; disabled?: boolean; hea
       <Menu.SubTrigger className={subTriggerClass()} disabled={disabled}>
         {heading} →
       </Menu.SubTrigger>
-      <Menu.Content
-        className={animated ? animatedContentClass() : contentClass()}
-        {...contentProps}
-      >
-        {children}
-      </Menu.Content>
+      <Menu.Portal>
+        <Menu.SubContent
+          className={animated ? animatedContentClass() : contentClass()}
+          {...contentProps}
+        >
+          {children}
+        </Menu.SubContent>
+      </Menu.Portal>
     </Menu.Sub>
   );
 };

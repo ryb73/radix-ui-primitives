@@ -1,6 +1,6 @@
 {
   "name": "@radix-ui/react-portal",
-  "version": "0.1.5-rc.18",
+  "version": "1.0.2",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@radix-ui/react-primitive": "workspace:*",
-    "@radix-ui/react-use-layout-effect": "workspace:*"
+    "@radix-ui/react-primitive": "workspace:*"
   },
   "peerDependencies": {
     "react": "^16.8 || ^17.0 || ^18.0",
@@ -31,6 +30,5 @@
   },
   "bugs": {
     "url": "https://github.com/radix-ui/primitives/issues"
-  },
-  "stableVersion": "0.1.4"
+  }
 }

@@ -3,7 +3,6 @@
   "compilerOptions": {
     "paths": {
       "@radix-ui/number": ["./packages/core/number/src"],
-      "@radix-ui/popper": ["./packages/core/popper/src"],
       "@radix-ui/primitive": ["./packages/core/primitive/src"],
       "@radix-ui/rect": ["./packages/core/rect/src"],
       "@radix-ui/react-accessible-icon": ["./packages/react/accessible-icon/src"],
@@ -25,10 +24,12 @@
       "@radix-ui/react-dropdown-menu": ["packages/react/dropdown-menu/src"],
       "@radix-ui/react-focus-guards": ["packages/react/focus-guards/src"],
       "@radix-ui/react-focus-scope": ["./packages/react/focus-scope/src"],
+      "@radix-ui/react-form": ["./packages/react/form/src"],
       "@radix-ui/react-hover-card": ["./packages/react/hover-card/src"],
       "@radix-ui/react-id": ["./packages/react/id/src"],
       "@radix-ui/react-label": ["./packages/react/label/src"],
       "@radix-ui/react-menu": ["./packages/react/menu/src"],
+      "@radix-ui/react-menubar": ["packages/react/menubar/src"],
       "@radix-ui/react-navigation-menu": ["./packages/react/navigation-menu/src"],
       "@radix-ui/react-popover": ["./packages/react/popover/src"],
       "@radix-ui/react-popper": ["./packages/react/popper/src"],
@@ -50,7 +51,6 @@
       "@radix-ui/react-toggle-group": ["./packages/react/toggle-group/src"],
       "@radix-ui/react-toolbar": ["./packages/react/toolbar/src"],
       "@radix-ui/react-tooltip": ["./packages/react/tooltip/src"],
-      "@radix-ui/react-use-body-pointer-events": ["./packages/react/use-body-pointer-events/src"],
       "@radix-ui/react-use-callback-ref": ["./packages/react/use-callback-ref/src"],
       "@radix-ui/react-use-controllable-state": ["./packages/react/use-controllable-state/src"],
       "@radix-ui/react-use-escape-keydown": ["./packages/react/use-escape-keydown/src"],

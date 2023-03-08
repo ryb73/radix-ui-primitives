@@ -1,6 +1,6 @@
 {
   "name": "@radix-ui/react-dialog",
-  "version": "0.1.8-rc.25",
+  "version": "1.0.3",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -30,7 +30,7 @@
     "@radix-ui/react-slot": "workspace:*",
     "@radix-ui/react-use-controllable-state": "workspace:*",
     "aria-hidden": "^1.1.1",
-    "react-remove-scroll": "^2.4.0"
+    "react-remove-scroll": "2.5.5"
   },
   "peerDependencies": {
     "react": "^16.8 || ^17.0 || ^18.0",
@@ -43,6 +43,5 @@
   },
   "bugs": {
     "url": "https://github.com/radix-ui/primitives/issues"
-  },
-  "stableVersion": "0.1.7"
+  }
 }

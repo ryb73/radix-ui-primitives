@@ -1,6 +1,6 @@
 {
   "name": "@ryb73/radix-ui-react-slider",
-  "version": "0.1.5-rc.21-rb.1",
+  "version": "1.1.1-rb.1",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -17,17 +17,17 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@radix-ui/number": "^0.1.0",
-    "@radix-ui/primitive": "^0.1.0",
-    "@radix-ui/react-collection": "^0.1.5-rc.18",
-    "@radix-ui/react-compose-refs": "^0.1.1-rc.18",
-    "@radix-ui/react-context": "^0.1.2-rc.18",
-    "@radix-ui/react-direction": "^0.1.0-rc.21",
-    "@radix-ui/react-primitive": "^0.1.5-rc.18",
-    "@radix-ui/react-use-controllable-state": "^0.1.1-rc.18",
-    "@radix-ui/react-use-layout-effect": "^0.1.1-rc.18",
-    "@radix-ui/react-use-previous": "^0.1.2-rc.18",
-    "@radix-ui/react-use-size": "^0.1.2-rc.18"
+    "@radix-ui/number": "^1.0.0",
+    "@radix-ui/primitive": "^1.0.0",
+    "@radix-ui/react-collection": "^1.0.0",
+    "@radix-ui/react-compose-refs": "^1.0.0",
+    "@radix-ui/react-context": "^1.0.0",
+    "@radix-ui/react-direction": "^1.0.0",
+    "@radix-ui/react-primitive": "^1.0.0",
+    "@radix-ui/react-use-controllable-state": "^1.0.0",
+    "@radix-ui/react-use-layout-effect": "^1.0.0",
+    "@radix-ui/react-use-previous": "^1.0.0",
+    "@radix-ui/react-use-size": "^1.0.0"
   },
   "devDependencies": {
     "@types/form-serialize": "^0",
@@ -44,6 +44,5 @@
   },
   "bugs": {
     "url": "https://github.com/radix-ui/primitives/issues"
-  },
-  "stableVersion": "0.1.4"
+  }
 }

@@ -223,22 +223,6 @@ export const ForcedMount = () => (
   </Dialog.Root>
 );
 
-export const AllowPinchZoom = () => (
-  <div style={{ display: 'grid', placeItems: 'center', height: '200vh' }}>
-    <Dialog.Root allowPinchZoom>
-      <Dialog.Trigger className={triggerClass()}>open</Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className={overlayClass()} />
-        <Dialog.Content className={contentDefaultClass()}>
-          <Dialog.Title>Booking info</Dialog.Title>
-          <Dialog.Description>Please enter the info for your booking below.</Dialog.Description>
-          <Dialog.Close className={closeClass()}>close</Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
-  </div>
-);
-
 export const InnerScrollable = () => (
   <Dialog.Root>
     <Dialog.Trigger className={triggerClass()}>open</Dialog.Trigger>
@@ -469,6 +453,71 @@ export const Chromatic = () => (
   </>
 );
 Chromatic.parameters = { chromatic: { disable: false } };
+
+export const Cypress = () => {
+  const [modal, setModal] = React.useState(true);
+  const [animated, setAnimated] = React.useState(false);
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <>
+      <Dialog.Root modal={modal}>
+        <Dialog.Trigger className={triggerClass()}>open</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Content
+            className={
+              animated
+                ? animatedContentClass({ css: { animationDuration: '50ms !important' } })
+                : contentDefaultClass()
+            }
+          >
+            <Dialog.Title>title</Dialog.Title>
+            <Dialog.Description>description</Dialog.Description>
+            <Dialog.Close className={closeClass()}>close</Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <br />
+      <br />
+
+      <label>
+        <input
+          type="checkbox"
+          checked={modal}
+          onChange={(event) => setModal(Boolean(event.target.checked))}
+        />{' '}
+        modal
+      </label>
+
+      <br />
+
+      <label>
+        <input
+          type="checkbox"
+          checked={animated}
+          onChange={(event) => setAnimated(Boolean(event.target.checked))}
+        />{' '}
+        animated
+      </label>
+
+      <br />
+
+      <label>
+        count up{' '}
+        <button type="button" onClick={() => setCount((count) => count + 1)}>
+          {count}
+        </button>
+      </label>
+
+      <br />
+
+      <label>
+        name: <input type="text" placeholder="name" />
+      </label>
+    </>
+  );
+};
 
 const triggerClass = css({});
 

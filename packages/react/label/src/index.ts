@@ -1,1 +1,6 @@
-export * from './Label';
+export {
+  Label,
+  //
+  Root,
+} from './Label';
+export type { LabelProps } from './Label';

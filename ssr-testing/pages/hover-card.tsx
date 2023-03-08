@@ -1,20 +1,16 @@
 import * as React from 'react';
-import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-  HoverCardArrow,
-} from '@radix-ui/react-hover-card';
+import * as HoverCard from '@radix-ui/react-hover-card';
 
 export default function HoverCardPage() {
   return (
-    <HoverCard>
-      <HoverCardTrigger>Hover me</HoverCardTrigger>
-
-      <HoverCardContent>
-        <HoverCardArrow width={20} height={10} />
-        Nicely done!
-      </HoverCardContent>
-    </HoverCard>
+    <HoverCard.Root>
+      <HoverCard.Trigger>Hover me</HoverCard.Trigger>
+      <HoverCard.Portal>
+        <HoverCard.Content>
+          <HoverCard.Arrow width={20} height={10} />
+          Nicely done!
+        </HoverCard.Content>
+      </HoverCard.Portal>
+    </HoverCard.Root>
   );
 }

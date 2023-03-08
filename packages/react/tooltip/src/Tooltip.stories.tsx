@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, keyframes } from '../../../../stitches.config';
-import { SIDE_OPTIONS, ALIGN_OPTIONS } from '@radix-ui/popper';
+import { SIDE_OPTIONS, ALIGN_OPTIONS } from '@radix-ui/react-popper';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
@@ -10,10 +10,12 @@ export const Styled = () => (
   <Tooltip.Provider>
     <Tooltip.Root>
       <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-      <Tooltip.Content className={contentClass()} sideOffset={5}>
-        Nicely done!
-        <Tooltip.Arrow className={arrowClass()} offset={10} />
-      </Tooltip.Content>
+      <Tooltip.Portal>
+        <Tooltip.Content className={contentClass()} sideOffset={5}>
+          Nicely done!
+          <Tooltip.Arrow className={arrowClass()} offset={10} />
+        </Tooltip.Content>
+      </Tooltip.Portal>
     </Tooltip.Root>
   </Tooltip.Provider>
 );
@@ -26,34 +28,16 @@ export const Controlled = () => {
         <Tooltip.Trigger style={{ margin: 100 }}>
           I'm controlled, look I'm {open ? 'open' : 'closed'}
         </Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </Tooltip.Provider>
   );
 };
-
-export const WithoutProvider = () => (
-  <>
-    <p>These will always have an open delay because of the missing provider.</p>
-    <Tooltip.Root>
-      <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-      <Tooltip.Content className={contentClass()} sideOffset={5}>
-        Nicely done!
-        <Tooltip.Arrow className={arrowClass()} offset={10} />
-      </Tooltip.Content>
-    </Tooltip.Root>
-    <Tooltip.Root>
-      <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-      <Tooltip.Content className={contentClass()} sideOffset={5}>
-        Nicely done!
-        <Tooltip.Arrow className={arrowClass()} offset={10} />
-      </Tooltip.Content>
-    </Tooltip.Root>
-  </>
-);
 
 export const CustomDurations = () => (
   <Tooltip.Provider>
@@ -63,24 +47,30 @@ export const CustomDurations = () => (
     <div style={{ display: 'flex', gap: 50 }}>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </div>
 
@@ -89,24 +79,30 @@ export const CustomDurations = () => (
       <Tooltip.Provider delayDuration={0}>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
     </div>
@@ -116,24 +112,30 @@ export const CustomDurations = () => (
       <Tooltip.Provider delayDuration={2000}>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
     </div>
@@ -143,24 +145,30 @@ export const CustomDurations = () => (
     <div style={{ display: 'flex', gap: 50 }}>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </div>
 
@@ -169,24 +177,30 @@ export const CustomDurations = () => (
       <Tooltip.Provider skipDelayDuration={0}>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
     </div>
@@ -196,24 +210,30 @@ export const CustomDurations = () => (
       <Tooltip.Provider skipDelayDuration={5000}>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
     </div>
@@ -225,120 +245,138 @@ export const CustomContent = () => (
     <div style={{ display: 'flex', gap: 20, padding: 100 }}>
       <Tooltip.Root>
         <Tooltip.Trigger>Heading</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <h1>Some heading</h1>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <h1>Some heading</h1>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Paragraph</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <p>Some paragraph</p>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <p>Some paragraph</p>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>List</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <ul>
-            <li>One</li>
-            <li>Two</li>
-            <li>Three</li>
-          </ul>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <ul>
+              <li>One</li>
+              <li>Two</li>
+              <li>Three</li>
+            </ul>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Article</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <article>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum, quae qui. Magnam
-            delectus ex totam repellat amet distinctio unde, porro architecto voluptatibus nemo et
-            nisi, voluptatem eligendi earum autem fugit.
-          </article>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <article>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum, quae qui. Magnam
+              delectus ex totam repellat amet distinctio unde, porro architecto voluptatibus nemo et
+              nisi, voluptatem eligendi earum autem fugit.
+            </article>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Figure</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <figure style={{ margin: 0 }}>
-            <img
-              src="https://pbs.twimg.com/profile_images/864164353771229187/Catw6Nmh_400x400.jpg"
-              alt=""
-              width={100}
-            />
-            <figcaption>Colm Tuite</figcaption>
-          </figure>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://pbs.twimg.com/profile_images/864164353771229187/Catw6Nmh_400x400.jpg"
+                alt=""
+                width={100}
+              />
+              <figcaption>Colm Tuite</figcaption>
+            </figure>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Time</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          {/* @ts-ignore */}
-          <time datetime="2017-10-31T11:21:00+02:00">Tuesday, 31 October 2017</time>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            {/* @ts-ignore */}
+            <time datetime="2017-10-31T11:21:00+02:00">Tuesday, 31 October 2017</time>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Link</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          View in <a href="https://modulz.app">Modulz</a>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            View in <a href="https://workos.com">WorkOS</a>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Form</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <form>
-            <label htmlFor="fname">First name:</label>
-            <br />
-            <input type="text" id="fname" name="fname" />
-            <br />
-            <label htmlFor="lname">Last name:</label>
-            <br />
-            <input type="text" id="lname" name="lname" />
-          </form>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <form>
+              <label htmlFor="fname">First name:</label>
+              <br />
+              <input type="text" id="fname" name="fname" />
+              <br />
+              <label htmlFor="lname">Last name:</label>
+              <br />
+              <input type="text" id="lname" name="lname" />
+            </form>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
       <Tooltip.Root>
         <Tooltip.Trigger>Mini layout</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          <p
-            style={{
-              margin: 0,
-              textAlign: 'center',
-              fontFamily: 'apple-system, BlinkMacSystemFont, helvetica, arial, sans-serif',
-              fontSize: 14,
-            }}
-          >
-            Start video call
-            <span style={{ display: 'block', color: '#999' }}>
-              press{' '}
-              <kbd
-                style={{
-                  fontFamily: 'apple-system, BlinkMacSystemFont, helvetica, arial, sans-serif',
-                  fontWeight: 'bold',
-                  color: 'white',
-                }}
-                aria-label="c key"
-              >
-                c
-              </kbd>
-            </span>
-          </p>
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            <p
+              style={{
+                margin: 0,
+                textAlign: 'center',
+                fontFamily: 'apple-system, BlinkMacSystemFont, helvetica, arial, sans-serif',
+                fontSize: 14,
+              }}
+            >
+              Start video call
+              <span style={{ display: 'block', color: '#999' }}>
+                press{' '}
+                <kbd
+                  style={{
+                    fontFamily: 'apple-system, BlinkMacSystemFont, helvetica, arial, sans-serif',
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}
+                  aria-label="c key"
+                >
+                  c
+                </kbd>
+              </span>
+            </p>
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </div>
   </Tooltip.Provider>
@@ -495,19 +533,19 @@ export const WithText = () => (
       Hello this is a test with{' '}
       <SimpleTooltip label="This is a tooltip">
         <Tooltip.Trigger asChild>
-          <a href="https://modulz.app">Tooltip.Root</a>
+          <a href="https://workos.com">Tooltip.Root</a>
         </Tooltip.Trigger>
       </SimpleTooltip>{' '}
       inside a Text Component{' '}
       <SimpleTooltip label="This is a tooltip" side="top">
         <Tooltip.Trigger asChild>
-          <a href="https://modulz.app">Tooltip.Root</a>
+          <a href="https://workos.com">Tooltip.Root</a>
         </Tooltip.Trigger>
       </SimpleTooltip>{' '}
       some more text{' '}
       <SimpleTooltip label="This is a tooltip" side="right" align="center">
         <Tooltip.Trigger asChild>
-          <a href="https://modulz.app">Tooltip.Root</a>
+          <a href="https://workos.com">Tooltip.Root</a>
         </Tooltip.Trigger>
       </SimpleTooltip>{' '}
     </p>
@@ -584,12 +622,14 @@ export const SlottableContent = () => (
   <Tooltip.Provider>
     <Tooltip.Root>
       <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-      <Tooltip.Content asChild sideOffset={5}>
-        <div className={contentClass()}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </div>
-      </Tooltip.Content>
+      <Tooltip.Portal>
+        <Tooltip.Content asChild sideOffset={5}>
+          <div className={contentClass()}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </div>
+        </Tooltip.Content>
+      </Tooltip.Portal>
     </Tooltip.Root>
   </Tooltip.Provider>
 );
@@ -604,10 +644,12 @@ export const WithinDialog = () => (
         <Dialog.Close>Close dialog</Dialog.Close>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </Dialog.Content>
     </Dialog.Root>
@@ -627,16 +669,18 @@ export const KeepOpenOnActivation = () => {
         >
           Hover or Focus me
         </Tooltip.Trigger>
-        <Tooltip.Content
-          className={contentClass()}
-          sideOffset={5}
-          onPointerDownOutside={(event) => {
-            if (event.target === triggerRef.current) event.preventDefault();
-          }}
-        >
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            className={contentClass()}
+            sideOffset={5}
+            onPointerDownOutside={(event) => {
+              if (event.target === triggerRef.current) event.preventDefault();
+            }}
+          >
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </Tooltip.Provider>
   );
@@ -658,10 +702,12 @@ export const WithinScrollable = () => (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 600 }}>
         <Tooltip.Root>
           <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-          <Tooltip.Content className={contentClass()} sideOffset={5}>
-            Nicely done!
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </Tooltip.Content>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
         </Tooltip.Root>
       </div>
     </div>
@@ -670,13 +716,75 @@ export const WithinScrollable = () => (
     >
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Nicely done!
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Nicely done!
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </div>
   </Tooltip.Provider>
+);
+
+export const DisableHoverableContent = () => (
+  <>
+    <h1>Hoverable content (Default)</h1>
+    <p>Content remains open while moving pointer to it</p>
+    <div style={{ display: 'flex', gap: 50 }}>
+      <Tooltip.Provider skipDelayDuration={1000}>
+        <Tooltip.Root>
+          <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    </div>
+
+    <h1>Disable hoverable content</h1>
+    <p>Tooltip closes when pointer leaves the trigger</p>
+    <h2>Inherited from provider</h2>
+    <div style={{ display: 'flex', gap: 50 }}>
+      <Tooltip.Provider delayDuration={0} disableHoverableContent>
+        <Tooltip.Root>
+          <Tooltip.Trigger className={triggerClass()}>Hover me</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    </div>
+    <h2>Inherited value overridden by prop on tooltip</h2>
+    <div style={{ display: 'flex', gap: 50 }}>
+      <Tooltip.Provider delayDuration={0} disableHoverableContent>
+        <Tooltip.Root>
+          <Tooltip.Trigger className={triggerClass()}>Disabled hoverable content</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+        <Tooltip.Root disableHoverableContent={false}>
+          <Tooltip.Trigger className={triggerClass()}>Hoverable content</Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    </div>
+  </>
 );
 
 // change order slightly for more pleasing visual
@@ -689,27 +797,33 @@ export const Chromatic = () => (
       <h2>Closed</h2>
       <Tooltip.Root>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
-      <h2>Open</h2>
+      <h2 style={{ marginBottom: 60 }}>Open</h2>
       <Tooltip.Root defaultOpen>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
-      <h2 style={{ marginTop: 60 }}>Open with reordered parts</h2>
+      <h2 style={{ marginTop: 60, marginBottom: 60 }}>Open with reordered parts</h2>
       <Tooltip.Root defaultOpen>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
       </Tooltip.Root>
 
@@ -717,27 +831,33 @@ export const Chromatic = () => (
       <h2>Closed</h2>
       <Tooltip.Root open={false}>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
-      <h2>Open</h2>
+      <h2 style={{ marginBottom: 60 }}>Open</h2>
       <Tooltip.Root open>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
-      <h2 style={{ marginTop: 60 }}>Open with reordered parts</h2>
+      <h2 style={{ marginTop: 60, marginBottom: 60 }}>Open with reordered parts</h2>
       <Tooltip.Root open>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
         <Tooltip.Trigger className={triggerClass()}>open</Tooltip.Trigger>
       </Tooltip.Root>
 
@@ -749,77 +869,21 @@ export const Chromatic = () => (
           ALIGN_OPTIONS.map((align) => (
             <Tooltip.Root key={`${side}-${align}`} open>
               <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                align={align}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-              </Tooltip.Content>
-            </Tooltip.Root>
-          ))
-        )}
-      </div>
-
-      <h3>Arrow offset</h3>
-      <h4>Positive</h4>
-      <div className={gridClass()}>
-        {SIDES.map((side) =>
-          ALIGN_OPTIONS.map((align) => (
-            <Tooltip.Root key={`${side}-${align}`} open>
-              <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                align={align}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow
-                  className={chromaticArrowClass()}
-                  width={20}
-                  height={10}
-                  offset={5}
-                />
-              </Tooltip.Content>
-            </Tooltip.Root>
-          ))
-        )}
-      </div>
-      <h4>Negative</h4>
-      <div className={gridClass()}>
-        {SIDES.map((side) =>
-          ALIGN_OPTIONS.map((align) => (
-            <Tooltip.Root key={`${side}-${align}`} open>
-              <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                align={align}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow
-                  className={chromaticArrowClass()}
-                  width={20}
-                  height={10}
-                  offset={-10}
-                />
-              </Tooltip.Content>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className={chromaticContentClass()}
+                  side={side}
+                  align={align}
+                  avoidCollisions={false}
+                >
+                  <p style={{ textAlign: 'center' }}>
+                    {side}
+                    <br />
+                    {align}
+                  </p>
+                  <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+                </Tooltip.Content>
+              </Tooltip.Portal>
             </Tooltip.Root>
           ))
         )}
@@ -832,20 +896,22 @@ export const Chromatic = () => (
           ALIGN_OPTIONS.map((align) => (
             <Tooltip.Root key={`${side}-${align}`} open>
               <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                sideOffset={5}
-                align={align}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-              </Tooltip.Content>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className={chromaticContentClass()}
+                  side={side}
+                  sideOffset={5}
+                  align={align}
+                  avoidCollisions={false}
+                >
+                  <p style={{ textAlign: 'center' }}>
+                    {side}
+                    <br />
+                    {align}
+                  </p>
+                  <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+                </Tooltip.Content>
+              </Tooltip.Portal>
             </Tooltip.Root>
           ))
         )}
@@ -856,20 +922,22 @@ export const Chromatic = () => (
           ALIGN_OPTIONS.map((align) => (
             <Tooltip.Root key={`${side}-${align}`} open>
               <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                sideOffset={-10}
-                align={align}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-              </Tooltip.Content>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className={chromaticContentClass()}
+                  side={side}
+                  sideOffset={-10}
+                  align={align}
+                  avoidCollisions={false}
+                >
+                  <p style={{ textAlign: 'center' }}>
+                    {side}
+                    <br />
+                    {align}
+                  </p>
+                  <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+                </Tooltip.Content>
+              </Tooltip.Portal>
             </Tooltip.Root>
           ))
         )}
@@ -882,20 +950,22 @@ export const Chromatic = () => (
           ALIGN_OPTIONS.map((align) => (
             <Tooltip.Root key={`${side}-${align}`} open>
               <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                align={align}
-                alignOffset={20}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-              </Tooltip.Content>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className={chromaticContentClass()}
+                  side={side}
+                  align={align}
+                  alignOffset={20}
+                  avoidCollisions={false}
+                >
+                  <p style={{ textAlign: 'center' }}>
+                    {side}
+                    <br />
+                    {align}
+                  </p>
+                  <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+                </Tooltip.Content>
+              </Tooltip.Portal>
             </Tooltip.Root>
           ))
         )}
@@ -906,20 +976,22 @@ export const Chromatic = () => (
           ALIGN_OPTIONS.map((align) => (
             <Tooltip.Root key={`${side}-${align}`} open>
               <Tooltip.Trigger className={chromaticTriggerClass()} />
-              <Tooltip.Content
-                className={chromaticContentClass()}
-                side={side}
-                align={align}
-                alignOffset={-10}
-                avoidCollisions={false}
-              >
-                <p style={{ textAlign: 'center' }}>
-                  {side}
-                  <br />
-                  {align}
-                </p>
-                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-              </Tooltip.Content>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className={chromaticContentClass()}
+                  side={side}
+                  align={align}
+                  alignOffset={-10}
+                  avoidCollisions={false}
+                >
+                  <p style={{ textAlign: 'center' }}>
+                    {side}
+                    <br />
+                    {align}
+                  </p>
+                  <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+                </Tooltip.Content>
+              </Tooltip.Portal>
             </Tooltip.Root>
           ))
         )}
@@ -949,38 +1021,57 @@ export const Chromatic = () => (
                     : { left: 10 })),
               }}
             />
-            <Tooltip.Content className={chromaticContentClass()} side={side} align={align}>
-              <p style={{ textAlign: 'center' }}>
-                {side}
-                <br />
-                {align}
-              </p>
-              <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
-            </Tooltip.Content>
+            <Tooltip.Portal>
+              <Tooltip.Content className={chromaticContentClass()} side={side} align={align}>
+                <p style={{ textAlign: 'center' }}>
+                  {side}
+                  <br />
+                  {align}
+                </p>
+                <Tooltip.Arrow className={chromaticArrowClass()} width={20} height={10} />
+              </Tooltip.Content>
+            </Tooltip.Portal>
           </Tooltip.Root>
         ))
       )}
 
-      <h1 style={{ marginTop: 100 }}>With slotted trigger</h1>
+      <h2 style={{ marginTop: 50, marginBottom: 60 }}>Relative parent (non-portalled)</h2>
+      <div style={{ position: 'relative' }}>
+        <Tooltip.Provider>
+          <Tooltip.Root open>
+            <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
+            <Tooltip.Content className={contentClass()} sideOffset={5}>
+              Nicely done!
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </Tooltip.Content>
+          </Tooltip.Root>
+        </Tooltip.Provider>
+      </div>
+
+      <h1 style={{ marginTop: 100, marginBottom: 60 }}>With slotted trigger</h1>
       <Tooltip.Root open>
         <Tooltip.Trigger asChild>
           <button className={triggerClass()}>open</button>
         </Tooltip.Trigger>
-        <Tooltip.Content className={contentClass()} sideOffset={5}>
-          Some content
-          <Tooltip.Arrow className={arrowClass()} width={20} height={10} offset={10} />
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content className={contentClass()} sideOffset={5}>
+            Some content
+            <Tooltip.Arrow className={arrowClass()} width={20} height={10} offset={10} />
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
 
-      <h1 style={{ marginTop: 100 }}>With slotted content</h1>
+      <h1 style={{ marginTop: 100, marginBottom: 60 }}>With slotted content</h1>
       <Tooltip.Root open>
         <Tooltip.Trigger className={triggerClass()}>Hover or Focus me</Tooltip.Trigger>
-        <Tooltip.Content asChild sideOffset={5}>
-          <div className={contentClass()}>
-            Some content
-            <Tooltip.Arrow className={arrowClass()} offset={10} />
-          </div>
-        </Tooltip.Content>
+        <Tooltip.Portal>
+          <Tooltip.Content asChild sideOffset={5}>
+            <div className={contentClass()}>
+              Some content
+              <Tooltip.Arrow className={arrowClass()} offset={10} />
+            </div>
+          </Tooltip.Content>
+        </Tooltip.Portal>
       </Tooltip.Root>
     </div>
   </Tooltip.Provider>
@@ -998,10 +1089,17 @@ function SimpleTooltip({
   return (
     <Tooltip.Root open={open} onOpenChange={onOpenChange}>
       {children}
-      <Tooltip.Content className={contentClass()} sideOffset={5} aria-label={ariaLabel} {...props}>
-        {label}
-        <Tooltip.Arrow className={arrowClass()} offset={10} />
-      </Tooltip.Content>
+      <Tooltip.Portal>
+        <Tooltip.Content
+          className={contentClass()}
+          sideOffset={5}
+          aria-label={ariaLabel}
+          {...props}
+        >
+          {label}
+          <Tooltip.Arrow className={arrowClass()} offset={10} />
+        </Tooltip.Content>
+      </Tooltip.Portal>
     </Tooltip.Root>
   );
 }
@@ -1016,10 +1114,9 @@ const triggerClass = css({});
 
 const RECOMMENDED_CSS__TOOLTIP__CONTENT: any = {
   transformOrigin: 'var(--radix-tooltip-content-transform-origin)',
-  // ensures content isn't selectable and cannot receive events
+  // ensures content isn't selectable
   // this is just a detterent to people putting interactive content inside a `Tooltip.Root`
   userSelect: 'none',
-  pointerEvents: 'none',
 };
 
 const contentClass = css({

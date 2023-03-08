@@ -154,6 +154,22 @@ export const KeyChange = () => {
   );
 };
 
+export const PauseResumeProps = () => {
+  const [toastCount, setToastCount] = React.useState(0);
+
+  return (
+    <Toast.Provider>
+      <button onClick={() => setToastCount((count) => count + 1)}>Add toast</button>
+
+      {[...Array(toastCount)].map((_, index) => (
+        <ToastWithProgress key={index} />
+      ))}
+
+      <Toast.Viewport className={viewportClass()} />
+    </Toast.Provider>
+  );
+};
+
 type Direction = React.ComponentProps<typeof Toast.Provider>['swipeDirection'];
 
 export const Animated = () => {
@@ -195,17 +211,62 @@ export const Animated = () => {
   );
 };
 
+export const Cypress = () => {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <Toast.Provider>
+      <button onClick={() => setCount((count) => count + 1)}>Add toast</button>
+      <div
+        style={{ display: 'flex', justifyContent: 'space-between', maxWidth: 700, margin: 'auto' }}
+      >
+        <button>Focusable before viewport</button>
+
+        {[...Array(count)].map((_, index) => {
+          const identifier = index + 1;
+          return (
+            <Toast.Root
+              key={index}
+              open
+              className={rootClass()}
+              data-testid={`toast-${identifier}`}
+            >
+              <Toast.Title className={titleClass()}>Toast {identifier} title</Toast.Title>
+              <Toast.Description className={descriptionClass()}>
+                Toast {identifier} description
+              </Toast.Description>
+
+              <Toast.Close className={buttonClass()} aria-label="Close">
+                Toast button {identifier}.1
+              </Toast.Close>
+              <Toast.Action
+                altText="Go and perform an action"
+                className={buttonClass()}
+                style={{ marginTop: 10 }}
+              >
+                Toast button {identifier}.2
+              </Toast.Action>
+            </Toast.Root>
+          );
+        })}
+        <Toast.Viewport className={viewportClass()} />
+
+        <button>Focusable after viewport</button>
+      </div>
+    </Toast.Provider>
+  );
+};
+
 const SNAPSHOT_DELAY = 300;
 export const Chromatic = () => {
-  const [dismissedBackgroundOpen, setDismissedBackgroundOpen] = React.useState(true);
-  const [dismissedForegroundOpen, setDismissedForegroundOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true);
   return (
     <>
-      <h1>Stacking</h1>
+      <h1>Order</h1>
       <Toast.Provider duration={Infinity}>
-        <Toast.Root type="foreground" className={rootClass()}>
+        <Toast.Root className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Stacking foreground</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast 1</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -213,9 +274,9 @@ export const Chromatic = () => {
             Action
           </Toast.Action>
         </Toast.Root>
-        <Toast.Root type="background" className={rootClass()}>
+        <Toast.Root className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Stacking background</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast 2</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -227,11 +288,12 @@ export const Chromatic = () => {
       </Toast.Provider>
 
       <h1>Uncontrolled</h1>
-      <h2>Background open</h2>
+
+      <h2>Open</h2>
       <Toast.Provider>
-        <Toast.Root type="background" duration={Infinity} className={rootClass()}>
+        <Toast.Root duration={Infinity} className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Uncontrolled background open</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -242,49 +304,9 @@ export const Chromatic = () => {
         <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
       </Toast.Provider>
 
-      <h2>Background closed</h2>
+      <h2>Closed</h2>
       <Toast.Provider>
-        <Toast.Root
-          type="background"
-          defaultOpen={false}
-          duration={Infinity}
-          className={rootClass()}
-        >
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Uncontrolled background closed</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground open</h2>
-      <Toast.Provider>
-        <Toast.Root type="foreground" duration={Infinity} className={rootClass()}>
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Uncontrolled foreground open</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground closed</h2>
-      <Toast.Provider>
-        <Toast.Root
-          type="foreground"
-          defaultOpen={false}
-          duration={Infinity}
-          className={rootClass()}
-        >
+        <Toast.Root defaultOpen={false} duration={Infinity} className={rootClass()}>
           <div className={headerClass()}>
             <Toast.Title className={titleClass()}>Title</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
@@ -300,11 +322,12 @@ export const Chromatic = () => {
       </Toast.Provider>
 
       <h1>Controlled</h1>
-      <h2>Background open</h2>
+
+      <h2>Open</h2>
       <Toast.Provider>
-        <Toast.Root type="background" open duration={Infinity} className={rootClass()}>
+        <Toast.Root open duration={Infinity} className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Controlled background open</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -315,41 +338,11 @@ export const Chromatic = () => {
         <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
       </Toast.Provider>
 
-      <h2>Background closed</h2>
+      <h2>Closed</h2>
       <Toast.Provider>
-        <Toast.Root type="background" open={false} duration={Infinity} className={rootClass()}>
+        <Toast.Root open={false} duration={Infinity} className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Controlled background closed</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground open</h2>
-      <Toast.Provider>
-        <Toast.Root type="foreground" open duration={Infinity} className={rootClass()}>
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Controlled foreground open</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground closed</h2>
-      <Toast.Provider>
-        <Toast.Root type="foreground" open={false} duration={Infinity} className={rootClass()}>
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Controlled foreground closed</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -361,11 +354,11 @@ export const Chromatic = () => {
       </Toast.Provider>
 
       <h1>Dismissed</h1>
-      <h2>Background uncontrolled</h2>
+      <h2>Uncontrolled</h2>
       <Toast.Provider>
-        <Toast.Root type="background" duration={SNAPSHOT_DELAY - 100} className={rootClass()}>
+        <Toast.Root duration={SNAPSHOT_DELAY - 100} className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Dismissed background uncontrolled</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -376,53 +369,16 @@ export const Chromatic = () => {
         <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
       </Toast.Provider>
 
-      <h2>Background controlled</h2>
+      <h2>Controlled</h2>
       <Toast.Provider>
         <Toast.Root
-          type="background"
           duration={SNAPSHOT_DELAY - 100}
-          open={dismissedBackgroundOpen}
-          onOpenChange={setDismissedBackgroundOpen}
+          open={open}
+          onOpenChange={setOpen}
           className={rootClass()}
         >
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Dismissed background controlled</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground uncontrolled</h2>
-      <Toast.Provider>
-        <Toast.Root type="foreground" duration={SNAPSHOT_DELAY - 100} className={rootClass()}>
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Dismissed foreground uncontrolled</Toast.Title>
-            <Toast.Close className={closeClass()}>×</Toast.Close>
-          </div>
-          <Toast.Description className={descriptionClass()}>Description</Toast.Description>
-          <Toast.Action altText="alternative" className={buttonClass()} style={{ marginTop: 10 }}>
-            Action
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className={chromaticViewport()}></Toast.Viewport>
-      </Toast.Provider>
-
-      <h2>Foreground controlled</h2>
-      <Toast.Provider>
-        <Toast.Root
-          type="foreground"
-          duration={SNAPSHOT_DELAY - 100}
-          open={dismissedForegroundOpen}
-          onOpenChange={setDismissedForegroundOpen}
-          className={rootClass()}
-        >
-          <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Dismissed foreground controlled</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -438,7 +394,7 @@ export const Chromatic = () => {
       <Toast.Provider duration={SNAPSHOT_DELAY - 100}>
         <Toast.Root className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Provider duration</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -453,7 +409,7 @@ export const Chromatic = () => {
       <Toast.Provider duration={Infinity}>
         <Toast.Root duration={SNAPSHOT_DELAY - 100} className={rootClass()}>
           <div className={headerClass()}>
-            <Toast.Title className={titleClass()}>Provider duration overidden</Toast.Title>
+            <Toast.Title className={titleClass()}>Toast</Toast.Title>
             <Toast.Close className={closeClass()}>×</Toast.Close>
           </div>
           <Toast.Description className={descriptionClass()}>Description</Toast.Description>
@@ -471,7 +427,7 @@ Chromatic.parameters = { chromatic: { disable: false, delay: SNAPSHOT_DELAY } };
 /* -----------------------------------------------------------------------------------------------*/
 
 const ToastUpgradeAvailable = (props: React.ComponentProps<typeof Toast.Root>) => (
-  <Toast.Root type="background" className={rootClass()} {...props}>
+  <Toast.Root className={rootClass()} {...props}>
     <div className={headerClass()}>
       <Toast.Title className={titleClass()}>Upgrade available</Toast.Title>
       <Toast.Close className={closeClass()} aria-label="Close">
@@ -492,7 +448,7 @@ const ToastUpgradeAvailable = (props: React.ComponentProps<typeof Toast.Root>) =
 );
 
 const ToastSubscribeSuccess = (props: React.ComponentProps<typeof Toast.Root>) => (
-  <Toast.Root type="foreground" className={rootClass()} {...props}>
+  <Toast.Root className={rootClass()} {...props}>
     <div className={successHeaderClass()}>
       <Toast.Title className={titleClass()}>Success!</Toast.Title>
       <Toast.Close className={closeClass()} aria-label="Close">
@@ -504,6 +460,32 @@ const ToastSubscribeSuccess = (props: React.ComponentProps<typeof Toast.Root>) =
     </Toast.Description>
   </Toast.Root>
 );
+
+const ToastWithProgress = (props: React.ComponentProps<typeof Toast.Root>) => {
+  const [paused, setPaused] = React.useState(false);
+  const duration = 3000;
+
+  return (
+    <Toast.Root
+      className={rootClass()}
+      duration={duration}
+      onPause={() => setPaused(true)}
+      onResume={() => setPaused(false)}
+      {...props}
+    >
+      <Toast.Description>Successfully saved</Toast.Description>
+      <div className={progressBarClass()}>
+        <div
+          className={progressBarInnerClass()}
+          style={{
+            animationDuration: duration - 100 + 'ms',
+            animationPlayState: paused ? 'paused' : 'running',
+          }}
+        />
+      </div>
+    </Toast.Root>
+  );
+};
 
 const VIEWPORT_PADDING = 10;
 
@@ -522,6 +504,8 @@ const viewportClass = css({
 });
 
 const rootClass = css({
+  position: 'relative',
+  overflow: 'hidden',
   listStyle: 'none',
   width: 230,
   borderRadius: 4,
@@ -644,6 +628,28 @@ const animatedRootClass = css(rootClass, {
       animationName: slideDown,
     },
   },
+});
+
+const loading = keyframes({
+  from: { transform: 'translateX(-100%)' },
+  to: { transform: 'translateX(0%)' },
+});
+
+const progressBarClass = css({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: 2,
+  overflow: 'hidden',
+  backgroundColor: '$gray100',
+});
+
+const progressBarInnerClass = css({
+  height: '100%',
+  backgroundColor: '$green',
+  animationName: `${loading}`,
+  animationTimingFunction: 'linear',
 });
 
 const chromaticViewport = css({

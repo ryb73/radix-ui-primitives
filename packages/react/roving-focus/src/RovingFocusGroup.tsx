@@ -57,6 +57,8 @@ type RovingContextValue = RovingFocusGroupOptions & {
   currentTabStopId: string | null;
   onItemFocus(tabStopId: string): void;
   onItemShiftTab(): void;
+  onFocusableItemAdd(): void;
+  onFocusableItemRemove(): void;
 };
 
 const [RovingFocusProvider, useRovingFocusContext] =
@@ -119,6 +121,7 @@ const RovingFocusGroupImpl = React.forwardRef<
   const handleEntryFocus = useCallbackRef(onEntryFocus);
   const getItems = useCollection(__scopeRovingFocusGroup);
   const isClickFocusRef = React.useRef(false);
+  const [focusableItemsCount, setFocusableItemsCount] = React.useState(0);
 
   React.useEffect(() => {
     const node = ref.current;
@@ -140,9 +143,17 @@ const RovingFocusGroupImpl = React.forwardRef<
         [setCurrentTabStopId]
       )}
       onItemShiftTab={React.useCallback(() => setIsTabbingBackOut(true), [])}
+      onFocusableItemAdd={React.useCallback(
+        () => setFocusableItemsCount((prevCount) => prevCount + 1),
+        []
+      )}
+      onFocusableItemRemove={React.useCallback(
+        () => setFocusableItemsCount((prevCount) => prevCount - 1),
+        []
+      )}
     >
       <Primitive.div
-        tabIndex={isTabbingBackOut ? -1 : 0}
+        tabIndex={isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0}
         data-orientation={orientation}
         {...groupProps}
         ref={composedRefs}
@@ -190,17 +201,34 @@ const ITEM_NAME = 'RovingFocusGroupItem';
 type RovingFocusItemElement = React.ElementRef<typeof Primitive.span>;
 type PrimitiveSpanProps = Radix.ComponentPropsWithoutRef<typeof Primitive.span>;
 interface RovingFocusItemProps extends PrimitiveSpanProps {
+  tabStopId?: string;
   focusable?: boolean;
   active?: boolean;
 }
 
 const RovingFocusGroupItem = React.forwardRef<RovingFocusItemElement, RovingFocusItemProps>(
   (props: ScopedProps<RovingFocusItemProps>, forwardedRef) => {
-    const { __scopeRovingFocusGroup, focusable = true, active = false, ...itemProps } = props;
-    const id = useId();
+    const {
+      __scopeRovingFocusGroup,
+      focusable = true,
+      active = false,
+      tabStopId,
+      ...itemProps
+    } = props;
+    const autoId = useId();
+    const id = tabStopId || autoId;
     const context = useRovingFocusContext(ITEM_NAME, __scopeRovingFocusGroup);
     const isCurrentTabStop = context.currentTabStopId === id;
     const getItems = useCollection(__scopeRovingFocusGroup);
+
+    const { onFocusableItemAdd, onFocusableItemRemove } = context;
+
+    React.useEffect(() => {
+      if (focusable) {
+        onFocusableItemAdd();
+        return () => onFocusableItemRemove();
+      }
+    }, [focusable, onFocusableItemAdd, onFocusableItemRemove]);
 
     return (
       <Collection.ItemSlot

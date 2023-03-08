@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { FocusScope } from '@radix-ui/react-focus-scope';
 import * as Popper from '@radix-ui/react-popper';
 import { Portal } from '@radix-ui/react-portal';
 import { FocusGuards } from '@radix-ui/react-focus-guards';
 import { RemoveScroll } from 'react-remove-scroll';
 import { DismissableLayer } from '@radix-ui/react-dismissable-layer';
+import { Slot } from '@radix-ui/react-slot';
 
 type DismissableLayerProps = React.ComponentProps<typeof DismissableLayer>;
 type FocusScopeProps = React.ComponentProps<typeof FocusScope>;
@@ -487,7 +489,7 @@ function DummyDialog({ children, openLabel = 'Open', closeLabel = 'Close' }: Dum
       </button>
       {open ? (
         <FocusGuards>
-          <Portal>
+          <Portal asChild>
             <div
               style={{
                 position: 'fixed',
@@ -501,8 +503,8 @@ function DummyDialog({ children, openLabel = 'Open', closeLabel = 'Close' }: Dum
               }}
             />
           </Portal>
-          <Portal>
-            <RemoveScroll>
+          <Portal asChild>
+            <RemoveScroll as={Slot}>
               <DismissableLayer
                 asChild
                 disableOutsidePointerEvents
@@ -571,6 +573,8 @@ function DummyPopover({
   const [open, setOpen] = React.useState(false);
   const openButtonRef = React.useRef(null);
   const ScrollContainer = preventScroll ? RemoveScroll : React.Fragment;
+  const scrollLockWrapperProps = preventScroll ? { as: Slot } : undefined;
+
   return (
     <Popper.Root>
       <Popper.Anchor asChild>
@@ -580,8 +584,8 @@ function DummyPopover({
       </Popper.Anchor>
       {open ? (
         <FocusGuards>
-          <Portal>
-            <ScrollContainer>
+          <ScrollContainer {...scrollLockWrapperProps}>
+            <Portal asChild>
               <DismissableLayer
                 asChild
                 disableOutsidePointerEvents={disableOutsidePointerEvents}
@@ -633,10 +637,30 @@ function DummyPopover({
                   </Popper.Content>
                 </FocusScope>
               </DismissableLayer>
-            </ScrollContainer>
-          </Portal>
+            </Portal>
+          </ScrollContainer>
         </FocusGuards>
       ) : null}
     </Popper.Root>
   );
 }
+
+export const InPopupWindow = () => {
+  const handlePopupClick = React.useCallback(() => {
+    const popupWindow = window.open(undefined, undefined, 'width=300,height=300,top=100,left=100');
+    if (!popupWindow) {
+      console.error('Failed to open popup window, check your popup blocker settings');
+      return;
+    }
+
+    const containerNode = popupWindow.document.createElement('div');
+    popupWindow.document.body.append(containerNode);
+
+    ReactDOM.render(<DismissableBox />, containerNode);
+  }, []);
+  return (
+    <div style={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
+      <button onClick={handlePopupClick}>Open Popup</button>
+    </div>
+  );
+};
